@@ -1,0 +1,100 @@
+[
+    {
+        "comment":  "lines are split",
+        "tokens": [
+            { "value": "1", "ttype": "NUMBER" },
+            { "value": "+", "ttype": "ADD" },
+            { "value": "1", "ttype": "NUMBER" },
+            { "value": ";", "ttype": "ENDLINE" },
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": "+", "ttype": "ADD" },
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": ";", "ttype": "ENDLINE" }
+        ],
+        "ast": {"commands":[{"expression":{"term_op":{"type":"ADD"},"expression":{"term":{"factor":{"number":{"value":"1"}}}},"term":{"factor":{"number":{"value":"1"}}}}},{"expression":{"term_op":{"type":"ADD"},"expression":{"term":{"factor":{"number":{"value":"2"}}}},"term":{"factor":{"number":{"value":"2"}}}}}]}
+    },
+    {
+        "comment": "PMDAS Paren is honored",
+        "tokens": [
+            { "value": "3", "ttype": "NUMBER" },
+            { "value": "*", "ttype": "MULTIPLY" },
+            { "value": "(", "ttype": "OPEN_PAREN" },
+            { "value": "1", "ttype": "NUMBER" },
+            { "value": "+", "ttype": "ADD" },
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": ")", "ttype": "CLOSE_PAREN" },
+            { "value": ";", "ttype": "ENDLINE" }
+        ],
+        "ast": {"commands":[{"expression":{"term":{"term":{"factor":{"number":{"value":"3"}}},"factor_op":{"type":"MULTIPLY"},"factor":{"expression":{"term_op":{"type":"ADD"},"expression":{"term":{"factor":{"number":{"value":"1"}}}},"term":{"factor":{"number":{"value":"2"}}}}}}}}]}
+    },
+    {
+        "comment": "PMDAS Multiply is honored.",
+        "tokens": [
+            { "value": "3", "ttype": "NUMBER" },
+            { "value": "+", "ttype": "ADD" },
+            { "value": "1", "ttype": "NUMBER" },
+            { "value": "*", "ttype": "MULTIPLY" },
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": ";", "ttype": "ENDLINE" }
+        ],
+        "ast": {"commands":[{"expression":{"term_op":{"type":"ADD"},"expression":{"term":{"factor":{"number":{"value":"3"}}}},"term":{"term":{"factor":{"number":{"value":"1"}}},"factor_op":{"type":"MULTIPLY"},"factor":{"number":{"value":"2"}}}}}]}
+    },
+    {
+        "comment": "PMDAS Divide is honored.",
+        "tokens": [
+            { "value": "3", "ttype": "NUMBER" },
+            { "value": "+", "ttype": "ADD" },
+            { "value": "1", "ttype": "NUMBER" },
+            { "value": "/", "ttype": "DIVIDE" },
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": ";", "ttype": "ENDLINE" }
+        ],
+        "ast": {"commands":[{"expression":{"term_op":{"type":"ADD"},"expression":{"term":{"factor":{"number":{"value":"3"}}}},"term":{"term":{"factor":{"number":{"value":"1"}}},"factor_op":{"type":"DIVIDE"},"factor":{"number":{"value":"2"}}}}}]}
+    },
+    {
+        "comment": "PMDAS Add is honored",
+        "tokens": [
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": "*", "ttype": "MULTIPLY" },
+            { "value": "3", "ttype": "NUMBER" },
+            { "value": "+", "ttype": "ADD" },
+            { "value": "5", "ttype": "NUMBER" },
+            { "value": "/", "ttype": "DIVIDE" },
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": ";", "ttype": "ENDLINE" }
+        ],
+        "ast": {"commands":[{"expression":{"term_op":{"type":"ADD"},"expression":{"term":{"term":{"factor":{"number":{"value":"2"}}},"factor_op":{"type":"MULTIPLY"},"factor":{"number":{"value":"3"}}}},"term":{"term":{"factor":{"number":{"value":"5"}}},"factor_op":{"type":"DIVIDE"},"factor":{"number":{"value":"2"}}}}}]}
+    },
+    {
+        "comment": "PMDAS Subtract is honored.",
+        "tokens": [
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": "*", "ttype": "MULTIPLY" },
+            { "value": "3", "ttype": "NUMBER" },
+            { "value": "-", "ttype": "SUBTRACT" },
+            { "value": "5", "ttype": "NUMBER" },
+            { "value": "/", "ttype": "DIVIDE" },
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": ";", "ttype": "ENDLINE" }
+        ],
+        "ast": {"commands":[{"expression":{"term_op":{"type":"SUBTRACT"},"expression":{"term":{"term":{"factor":{"number":{"value":"2"}}},"factor_op":{"type":"MULTIPLY"},"factor":{"number":{"value":"3"}}}},"term":{"term":{"factor":{"number":{"value":"5"}}},"factor_op":{"type":"DIVIDE"},"factor":{"number":{"value":"2"}}}}}]}
+    },
+    {
+        "comment": "PMDAS Sub Expr is honored.",
+        "tokens": [
+            { "value": "1", "ttype": "NUMBER" },
+            { "value": "+", "ttype": "ADD" },
+            { "value": "(", "ttype": "OPEN_PAREN" },
+            { "value": "2", "ttype": "NUMBER" },
+            { "value": "-", "ttype": "SUBTRACT" },
+            { "value": "(", "ttype": "OPEN_PAREN" },
+            { "value": "3", "ttype": "NUMBER" },
+            { "value": "+", "ttype": "ADD" },
+            { "value": "4", "ttype": "NUMBER" },
+            { "value": ")", "ttype": "CLOSE_PAREN" },
+            { "value": ")", "ttype": "CLOSE_PAREN" },
+            { "value": ";", "ttype": "ENDLINE" }
+        ],
+        "ast": {"commands":[{"expression":{"term_op":{"type":"ADD"},"expression":{"term":{"factor":{"number":{"value":"1"}}}},"term":{"factor":{"expression":{"term_op":{"type":"SUBTRACT"},"expression":{"term":{"factor":{"number":{"value":"2"}}}},"term":{"factor":{"expression":{"term_op":{"type":"ADD"},"expression":{"term":{"factor":{"number":{"value":"3"}}}},"term":{"factor":{"number":{"value":"4"}}}}}}}}}}}]}
+    }
+]

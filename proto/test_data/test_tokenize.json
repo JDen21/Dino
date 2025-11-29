@@ -1,0 +1,556 @@
+[
+    {
+        "comment": "empty program",
+        "program": "",
+        "tokens": [
+            {
+                "value": "",
+                "ttype": "NONE"
+            }
+        ]
+    },
+    {
+        "comment": "program end line no left side",
+        "program": ";",
+        "tokens": [
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "program multiple lines",
+        "program": ";;",
+        "tokens": [
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "tokens valid left of end line(number)",
+        "program": "1;",
+        "tokens": [
+            {
+                "value": "1",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "tokens valid left of end line(close parenthesis)",
+        "program": "(1);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "1",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "multi digit number",
+        "program": "12359801;",
+        "tokens": [
+            {
+                "value": "12359801",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "number after another line",
+        "program": ";123;",
+        "tokens": [
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            },
+            {
+                "value": "123",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "number in parenthesis",
+        "program": "(123);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "123",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "number addition",
+        "program": "1+25;",
+        "tokens": [
+            {
+                "value": "1",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "+",
+                "ttype": "ADD"
+            },
+            {
+                "value": "25",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "expression addition",
+        "program": "(21)+(11);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "21",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": "+",
+                "ttype": "ADD"
+            },
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "11",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "addition in expression",
+        "program": "(21+563);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "21",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "+",
+                "ttype": "ADD"
+            },
+            {
+                "value": "563",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "number subtraction",
+        "program": "130-25;",
+        "tokens": [
+            {
+                "value": "130",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "-",
+                "ttype": "SUBTRACT"
+            },
+            {
+                "value": "25",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "expression subtraction",
+        "program": "(123)-(312);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "123",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": "-",
+                "ttype": "SUBTRACT"
+            },
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "312",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "subtraction in expression",
+        "program": "(1241-414);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "1241",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "-",
+                "ttype": "SUBTRACT"
+            },
+            {
+                "value": "414",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "number multiplication",
+        "program": "3*5;",
+        "tokens": [
+            {
+                "value": "3",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "*",
+                "ttype": "MULTIPLY"
+            },
+            {
+                "value": "5",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "expression multiplication",
+        "program": "(12)*(14);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "12",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": "*",
+                "ttype": "MULTIPLY"
+            },
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "14",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "multiplication in expression",
+        "program": "(12*5);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "12",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "*",
+                "ttype": "MULTIPLY"
+            },
+            {
+                "value": "5",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "number division",
+        "program": "12/5;",
+        "tokens": [
+            {
+                "value": "12",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "/",
+                "ttype": "DIVIDE"
+            },
+            {
+                "value": "5",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "expression division",
+        "program": "(12)/(25);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "12",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": "/",
+                "ttype": "DIVIDE"
+            },
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "25",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "division in expression",
+        "program": "(12/25);",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "12",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "/",
+                "ttype": "DIVIDE"
+            },
+            {
+                "value": "25",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "nested expressions",
+        "program": "((24)+(23/(1+2)));",
+        "tokens": [
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "24",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": "+",
+                "ttype": "ADD"
+            },
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "23",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "/",
+                "ttype": "DIVIDE"
+            },
+            {
+                "value": "(",
+                "ttype": "OPEN_PAREN"
+            },
+            {
+                "value": "1",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": "+",
+                "ttype": "ADD"
+            },
+            {
+                "value": "2",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ")",
+                "ttype": "CLOSE_PAREN"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    }
+]
