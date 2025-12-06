@@ -1,6 +1,6 @@
 
-import { tokenize } from "./index.mjs";
-import data from './test_tokenize.json' with { type: 'json' };
+import tokenize from './Tokenizer.mjs';
+import data from './test_data/test_tokenize.json' with { type: 'json' };
 
 let testCount = 1;
 let response;

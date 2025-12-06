@@ -1,1 +1,33 @@
-[["t1","ADD","1","1"],["t2","MULTIPLY","t1","2"],["t3","ADD","2","2"],["t4","DIVIDE","3","t3"],["t5","SUBTRACT","t2","t4"],["t5",null,null,null]]
+{
+    "commands": [
+        {
+            "bin_op": "-",
+            "left": {
+                "bin_op": "+",
+                "left": {
+                    "bin_op": "*",
+                    "left": {
+                        "bin_op": "/",
+                        "left": "1",
+                        "right": "21"
+                    },
+                    "right": "53"
+                },
+                "right": {
+                    "bin_op": "*",
+                    "left": "42",
+                    "right": {
+                        "bin_op": "+",
+                        "left": "12",
+                        "right": "5"
+                    }
+                }
+            },
+            "right": {
+                "bin_op": "/",
+                "left": "12",
+                "right": "54"
+            }
+        }
+    ]
+}

@@ -2,6 +2,8 @@
 // TODO NEGATIVE NUMBER
 // TODO FUNCTION CALL
 
+import { tokenize_eq_char, tokenize_semicol_char, tokenize_number_chars, tokenize_add_char, tokenize_subt_char, tokenize_mult_char, tokenize_div_char, tokenize_open_paren_char, tokenize_close_paren_char, tokenize_char_chars } from "./tokenizer_methods.mjs";
+
 export class Token {
   value;
   ttype;
@@ -31,373 +33,9 @@ export default function tokenize(program) {
   const tokens = [];
   const chars = program.toString().split("");
   let curr_token = new Token("", get_ttype(0));
-
-  for (const char of chars) {
-    switch (char) {
-      default:
-        throw new Error("Invalid Character input.");
-      case ' ':
-      case '\n': {
-        break;
-      }
-        case "=": {
-        switch (curr_token.ttype) {
-          case get_ttype(0):
-          case get_ttype(1):
-          case get_ttype(2):
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7):
-          case get_ttype(8):
-          case get_ttype(9): {
-            throw new Error(`Invalid Token Position. ${char}`);
-          }
-          // x=
-          case get_ttype(10): {
-            push_tok(new Token(char, get_ttype(9)));
-            break;
-          }
-          case get_ttype(11): {
-            throw new Error(`Invalid Token Position. ${char}`);
-          }
-        }
-        break;
-      }
-      case ";": {
-        switch (curr_token.ttype) {
-          // ;
-          case get_ttype(0): {
-            update_curr_tok(char, get_ttype(1));
-            break;
-          }
-          // ;; 1;
-          case get_ttype(1):
-          case get_ttype(2): {
-            push_tok(new Token(char, get_ttype(1)));
-            break;
-          }
-          // +; -; *; /; (;
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7): {
-            throw new Error("Invalid Operand found.");
-          }
-          // );
-          case get_ttype(8): {
-            push_tok(new Token(";", get_ttype(1)));
-            break;
-          }
-          // =;
-          case get_ttype(9): {
-            throw new Error("Invalid Assignment found.");
-          }
-          // x;
-          case get_ttype(10): {
-            push_tok(new Token(";", get_ttype(1)));
-            break;
-          }
-          // let;
-          case get_ttype(11): {
-            throw new Error('Invalid Identifier.');
-          }
-        }
-        break;
-      }
-      case "0":
-      case "1":
-      case "2":
-      case "3":
-      case "4":
-      case "5":
-      case "6":
-      case "7":
-      case "8":
-      case "9": {
-        switch (curr_token.ttype) {
-          // 1
-          case get_ttype(0): {
-            update_curr_tok(char, get_ttype(2));
-            break;
-          }
-          // ;1
-          case get_ttype(1): {
-            push_tok(new Token(char, get_ttype(2)));
-            break;
-          }
-          // 11
-          case get_ttype(2): {
-            update_curr_tok(char);
-            break;
-          }
-          // +1 -1 *1 /1 (1
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7): {
-            push_tok(new Token(char, get_ttype(2)));
-            break;
-          }
-          // )1
-          case get_ttype(8): {
-            throw new Error("Invalid Token Position.");
-          }
-          // =1
-          case get_ttype(9): {
-            push_tok(new Token(char, get_ttype(2)));
-            break;
-          }
-          // x1
-          case get_ttype(10): {
-            update_curr_tok(char);
-            break;
-          }
-          // let1
-          // ? keyword becomes identifier
-          case get_ttype(11): {
-            update_curr_tok(char, get_ttype(10));
-            break;
-          }
-        }
-        break;
-      }
-      case "+": {
-        switch (curr_token.ttype) {
-          // + ;+
-          case get_ttype(0):
-          case get_ttype(1): {
-            throw new Error("Invalid Token Position.");
-          }
-          // 1+
-          case get_ttype(2): {
-            push_tok(new Token(char, get_ttype(3)));
-            break;
-          }
-          // ++ -+ *+ /+ (+
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7): {
-            throw new Error("Invalid Token Position.");
-          }
-          // )+
-          case get_ttype(8): {
-            push_tok(new Token(char, get_ttype(3)));
-            break;
-          }
-          // =+
-          case get_ttype(9): {
-            throw new Error('Invalid Assignment.');
-          }
-          // x+
-          case get_ttype(10): {
-            push_tok(new Token(char, get_ttype(3)));
-            break;
-          }
-          // let+
-          case get_ttype(11): {
-            throw new Error('Invalid Identifier.');
-          }
-        }
-        break;
-      }
-      case "-": {
-        switch (curr_token.ttype) {
-          // - ;-
-          case get_ttype(0):
-          case get_ttype(1): {
-            throw new Error("Invalid Token Position.");
-          }
-          // 1-
-          case get_ttype(2): {
-            push_tok(new Token(char, get_ttype(4)));
-            break;
-          }
-          // +- -- *- /- (-
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7): {
-            throw new Error("Invalid Token Position.");
-          }
-          // )-
-          case get_ttype(8): {
-            push_tok(new Token(char, get_ttype(4)));
-            break;
-          }
-          // =-
-          case get_ttype(9): {
-            throw new Error('Invalid Assignment.');
-          }
-          // x-
-          case get_ttype(10): {
-            push_tok(new Token(char, get_ttype(4)));
-            break;
-          }
-          // let-
-          case get_ttype(11): {
-            throw new Error('Invalid Identifier.');
-          }
-        }
-        break;
-      }
-      case "*": {
-        switch (curr_token.ttype) {
-          // * ;*
-          case get_ttype(0):
-          case get_ttype(1): {
-            throw new Error("Invalid Token Position");
-          }
-          // 1*
-          case get_ttype(2): {
-            push_tok(new Token(char, get_ttype(5)));
-            break;
-          }
-
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7): {
-            throw new Error("Invalid Token Position.");
-          }
-          case get_ttype(8): {
-            push_tok(new Token(char, get_ttype(5)));
-            break;
-          }
-          // =*
-          case get_ttype(9): {
-            throw new Error('Invalid Assignment.');
-          }
-          // x*
-          case get_ttype(10): {
-            push_tok(new Token(char, get_ttype(5)));
-            break;
-          }
-          // let*
-          case get_ttype(11): {
-            throw new Error('Invalid Identifier.');
-          }
-        }
-        break;
-      }
-      case "/": {
-        switch (curr_token.ttype) {
-          // / ;/
-          case get_ttype(0):
-          case get_ttype(1): {
-            throw new Error("Invalid Token Position.");
-          }
-          // 1/
-          case get_ttype(2): {
-            push_tok(new Token(char, get_ttype(6)));
-            break;
-          }
-          // +/ -/ */ // (/
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7): {
-            throw new Error("Invalid Token Position.");
-          }
-          // )/
-          case get_ttype(8): {
-            push_tok(new Token(char, get_ttype(6)));
-            break;
-          }
-          // =/
-          case get_ttype(9): {
-            throw new Error('Invalid Assignment.');
-          }
-          // x/
-          case get_ttype(10): {
-            push_tok(new Token(char, get_ttype(6)));
-            break;
-          }
-          // let/
-          case get_ttype(11): {
-            throw new Error('Invalid Identifier.');
-          }
-        }
-        break;
-      }
-      case "(": {
-        switch (curr_token.ttype) {
-          // (
-          case get_ttype(0): {
-            update_curr_tok(char, get_ttype(7));
-            break;
-          }
-          // ;(
-          case get_ttype(1): {
-            push_tok(new Token(char, get_ttype(7)));
-            break;
-          }
-          // 1(
-          case get_ttype(2): {
-            throw new Error("Invalid Token Position.");
-          }
-          // +( -( *( /( ((
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7): {
-            push_tok(new Token(char, get_ttype(7)));
-            break;
-          }
-          // )(
-          case get_ttype(8): {
-            throw new Error("Invalid Token Position.");
-          }
-        }
-        break;
-      }
-      case ")": {
-        switch (curr_token.ttype) {
-          // ) ;)
-          case get_ttype(0):
-          case get_ttype(1): {
-            throw new Error("Invalid Token Position.");
-          }
-          // 1)
-          case get_ttype(2): {
-            push_tok(new Token(char, get_ttype(8)));
-            break;
-          }
-          // +) -) *) /)
-          case get_ttype(3):
-          case get_ttype(4):
-          case get_ttype(5):
-          case get_ttype(6):
-          case get_ttype(7): {
-            throw new Error("Invalid Token Position.");
-          }
-          // ))
-          case get_ttype(8): {
-            push_tok(new Token(char, get_ttype(8)));
-            break;
-          }
-        }
-        break;
-      }
-    }
-  }
-
-  if (curr_token.ttype !== get_ttype(1) && curr_token.ttype !== get_ttype(0)) {
-    throw new Error("Invalid Program End.");
-  } else {
-    push_tok(curr_token);
-  }
-
+  
   function push_tok(new_tok) {
+    curr_token.value = curr_token.value.trim();
     tokens.push(curr_token);
     curr_token = new_tok;
   }
@@ -412,6 +50,137 @@ export default function tokenize(program) {
     if (ttype) {
       curr_token.ttype = ttype;
     }
+  }
+
+  const helper_funcs = { push_tok, update_curr_tok };
+
+  for (const char of chars) {
+    switch (char) {
+      default:
+        throw new Error("Invalid Character input.");
+      case ' ': {
+        switch (curr_token.ttype) {
+          // <space>
+          case get_ttype(0):{
+            break;
+          }
+          default: {
+            update_curr_tok(' ');
+            break;
+          }
+        }
+        break;
+      }
+      case '\n': {
+        break;
+      }
+        case "=": {
+        tokenize_eq_char(curr_token, char, helper_funcs);
+        break;
+      }
+      case ";": {
+        tokenize_semicol_char(curr_token, char, helper_funcs);
+        break;
+      }
+      case 'a':
+      case 'b':
+      case 'c':
+      case 'd':
+      case 'e':
+      case 'f':
+      case 'g':
+      case 'h':
+      case 'i':
+      case 'j':
+      case 'k':
+      case 'l':
+      case 'm':
+      case 'n':
+      case 'o':
+      case 'p':
+      case 'q':
+      case 'r':
+      case 's':
+      case 't':
+      case 'u':
+      case 'v':
+      case 'w':
+      case 'x':
+      case 'y':
+      case 'z':
+      case 'A':
+      case 'B':
+      case 'C':
+      case 'D':
+      case 'E':
+      case 'F':
+      case 'G':
+      case 'H':
+      case 'I':
+      case 'J':
+      case 'K':
+      case 'L':
+      case 'M':
+      case 'N':
+      case 'O':
+      case 'P':
+      case 'Q':
+      case 'R':
+      case 'S':
+      case 'T':
+      case 'U':
+      case 'V':
+      case 'W':
+      case 'X':
+      case 'Y':
+      case 'Z': {
+        tokenize_char_chars(curr_token, char, helper_funcs);
+        break;
+      }
+      case "0":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9": {
+        tokenize_number_chars(curr_token, char, helper_funcs);
+        break;
+      }
+      case "+": {
+        tokenize_add_char(curr_token, char, helper_funcs);
+        break;
+      }
+      case "-": {
+        tokenize_subt_char(curr_token, char, helper_funcs);
+        break;
+      }
+      case "*": {
+        tokenize_mult_char(curr_token, char, helper_funcs);
+        break;
+      }
+      case "/": {
+        tokenize_div_char(curr_token, char, helper_funcs);
+        break;
+      }
+      case "(": {
+        tokenize_open_paren_char(curr_token, char, helper_funcs);
+        break;
+      }
+      case ")": {
+        tokenize_close_paren_char(curr_token, char, helper_funcs);
+        break;
+      }
+    }
+  }
+
+  if (curr_token.ttype !== get_ttype(1) && curr_token.ttype !== get_ttype(0)) {
+    throw new Error("Invalid Program End.");
+  } else {
+    push_tok(curr_token);
   }
 
   return tokens;

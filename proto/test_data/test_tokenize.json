@@ -552,5 +552,71 @@
                 "ttype": "ENDLINE"
             }
         ]
+    },
+    {
+        "comment": "Identifier initializition",
+        "program": "let a;",
+        "tokens": [
+            {
+                "value": "let",
+                "ttype": "LET"
+            },
+            {
+                "value": "a",
+                "ttype": "IDENTIFIER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "Identifier initializition with assignment",
+        "program": "let a=25;",
+        "tokens": [
+            {
+                "value": "let",
+                "ttype": "LET"
+            },
+            {
+                "value": "a",
+                "ttype": "IDENTIFIER"
+            },
+            {
+                "value": "=",
+                "ttype": "ASSIGNMENT"
+            },
+            {
+                "value": "25",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
+    },
+    {
+        "comment": "expression assigment",
+        "program": "a=25;",
+        "tokens": [
+            {
+                "value": "a",
+                "ttype": "IDENTIFIER"
+            },
+            {
+                "value": "=",
+                "ttype": "ASSIGNMENT"
+            },
+            {
+                "value": "25",
+                "ttype": "NUMBER"
+            },
+            {
+                "value": ";",
+                "ttype": "ENDLINE"
+            }
+        ]
     }
 ]

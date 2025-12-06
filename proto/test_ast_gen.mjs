@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import { build_ast } from "./ast_gen.mjs";
-import data from './test_ast_gen.json' with { type: 'json' };
+import data from './test_data/test_ast_gen.json' with { type: 'json' };
 
 let testCount = 1;
 let response;
