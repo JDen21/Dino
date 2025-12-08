@@ -1,12 +1,15 @@
 import ast_gen from "./ast_gen2.mjs";
+// import { tacs_gen } from "./tacs_gen.mjs";
+import interpret from "./interp_runtime/interpret.mjs";
 import tokenize from "./Tokenizer.mjs";
 import fs from "fs/promises";
 
 // const program = '(1+1);';
-const program = "1/21*53+42*(12+5)-12/54;";
+// const program = "1/21*53+42*(12+5)-12/54;";
 // const program = "let a;";
+const program = "let a = 1/21*53+42*(12+5)-12/54; a = 1+1;";
+// const program = "a = 1/21*53+42*(12+5)-12/54;";
 const tokens = tokenize(program);
-console.log({tokens})
 fs.writeFile(
   "./gen/tokens.json",
   JSON.stringify(tokens, (key, value) => {
@@ -30,8 +33,10 @@ fs.writeFile(
   }),
 );
 
+const env_keys_and_libs = {};
+interpret(ast, env_keys_and_libs);
+
 // const tacs = tacs_gen(ast);
-// console.log({ program }, { tokens }, { ast }, { tacs });
 // fs.writeFile(
 //   "./gen/tacs.json",
 //   JSON.stringify(tacs, (key, value) => {

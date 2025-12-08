@@ -253,10 +253,14 @@ export function tokenize_char_chars(curr_token, char, helper_funcs) {
   const { push_tok, update_curr_tok } = helper_funcs;
 
   switch (curr_token.ttype) {
-    // a ;a
-    case get_ttype(0): 
-    case get_ttype(1): {
+    // a 
+    case get_ttype(0):  {
       update_curr_tok(char, get_ttype(10));
+      break;
+    }
+    // ;a
+    case get_ttype(1): {
+      push_tok(new Token(char, get_ttype(10)));
       break;
     }
     // 2a

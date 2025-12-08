@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import { tacs_gen } from "./tacs_gen.mjs";
-import tokenize from './Tokenizer.mjs';
-import { build_ast } from './ast_gen.mjs';
+import tokenize from '../Tokenizer.mjs';
+import build_ast from '../ast_gen2.mjs';
 
 let testCount = 1;
 

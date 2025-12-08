@@ -1,5 +1,36 @@
-// import { LetStatement, Program, Statement } from "./ast_gen.mjs";
-import tokenize, { get_ttype } from "./Tokenizer.mjs";
+/**
+ * <statement> 
+ *  ::= <let_stmt>";" | 
+ *  ::= <assigment_stmt>";" | 
+ *  ::= <expression>";" | 
+ *  ::= <comparison_expression>";" | 
+ *  ::= <gate_expression>";"
+ * <let_stmt> ::= "let" <identifier> | "let" <identifier> <optional_init>
+ * <optional_init> ::= "=" <expression> | "=" <gate_expression> | "=" <comparison_expression> | E
+ * <assignment_stmt> 
+ *  ::= <identifier> "=" <expression> | 
+ *  ::= <identifier> "=" <gate_expression> | 
+ *  ::= <identifier> "=" <comparison_expression>
+ * <gate_expression> 
+ *  ::= "!"<comparison_expression> | 
+ *  ::= <comparison_expression> "&&" <comparison_expression> | 
+ *  ::= <comparison_expression> "||" <comparison_expression>
+ * <comparison_expression> 
+ *  ::= <expression> "==" <expression> | 
+ *  ::= <expression> "!=" <expression> | 
+ *  ::= <expression> "<" <expression> |
+ *  ::= <expression> "<=" <expression> |
+ *  ::= <expression> ">" <expression> |
+ *  ::= <expression> ">=" <expression> |
+ * <expression> ::= <term> | <expression> "+" <term> | <expression> "-" <term>
+    <term> ::= <factor> | <term> "*" <factor> | <term> "/" <factor>
+    <factor> ::= <number> | <identifier> | "(" <expression> ")"
+    <identifier> ::= <character> | <identifier><character> | <identifier> <digit>
+    <number> ::= <digit> | <digit> <number> 
+    <character> ::= "A" | "a" | "B" | "b" .. "Z" | "z"
+    <digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+ */
+import { get_ttype } from "./Tokenizer.mjs";
 
 let curr_tokens = [];
 let curr_tok_pos = 0;
@@ -9,6 +40,7 @@ const match = (expectedType) => {
         curr_tok_pos+=1;
         return;
     }
+    console.log(lookAhead(), expectedType)
     throw new Error('Syntax Error.');
 };
 
@@ -24,10 +56,12 @@ export default function ast_gen (tokens) {
     const program = new Program();
     
     while (curr_tok_pos < tokens.length) {
-        program.commands.push(generate_statement());
+        program.program_list.push(generate_statement());
     }
-
-    console.log(JSON.stringify(program))
+    curr_tokens = undefined;
+    curr_tok_pos = undefined;
+    // console.dir(program, { depth: null })
+    return program;
 }
 
 function generate_statement () {
@@ -62,7 +96,6 @@ function generate_statement () {
     // expr starting with num
     if (tok_type === get_ttype(2)) {
         const value = generate_expression();
-        console.log({ value })
         match(get_ttype(1));
         return value;
     }
@@ -77,15 +110,19 @@ function generate_let () {
 }
 
 function generate_optional_init () {
-    match(9); // =
-    return generate_expression();
+    if (lookAhead().ttype === get_ttype(9)) {
+        match(get_ttype(9)); // =
+        return generate_expression();
+    } else {
+        // nothing to do here
+    }
 }
 
 function generate_assignment () {
     const ass_stmt = new Assigment_Stmt();
     ass_stmt.assign_identifier = lookAhead().value;
-    match(10); // identifier
-    match(9); // =
+    match(get_ttype(10)); // identifier
+    match(get_ttype(9)); // =
     ass_stmt.assign_expr = generate_expression();
     return ass_stmt;
 }
@@ -93,6 +130,7 @@ function generate_assignment () {
 function generate_expression () {
     let left = generate_term();
     let operand = lookAhead();
+
     while (operand.ttype === get_ttype(3) || operand.ttype === get_ttype(4)) {
         if (operand.ttype === get_ttype(3)) {
             match(get_ttype(3));
@@ -100,8 +138,8 @@ function generate_expression () {
             match(get_ttype(4));
         }
         const right = generate_term();
-        const node = new Binary_Expr();
-        node.bin_op = operand.value;
+        const node = new Arithmetic_Expr();
+        node.arithmetic_op = operand.value;
         node.left = left;
         node.right = right;
         
@@ -115,6 +153,7 @@ function generate_expression () {
 function generate_term () {
     let left = generate_factor();
     let operand = lookAhead();
+
     while (operand.ttype === get_ttype(5) || operand.ttype === get_ttype(6)) {
         if (operand.ttype === get_ttype(5)) {
             match(get_ttype(5));
@@ -122,15 +161,15 @@ function generate_term () {
             match(get_ttype(6));
         }
         const right = generate_factor();
-        const node = new Binary_Expr();
-        node.bin_op = operand.value;
+        const node = new Arithmetic_Expr();
+        node.arithmetic_op = operand.value;
         node.left = left;
         node.right = right;
         
         left = node;
         operand = lookAhead();
     }
-    
+
     return left;
 }
 
@@ -140,7 +179,7 @@ function generate_factor () {
     if (ttype === get_ttype(2)) {
         const value = lookAhead().value;
         match(get_ttype(2));
-        return value;
+        return parseInt(value);
     } else if (ttype === get_ttype(10)) {
         const value = lookAhead().value;
         match(get_ttype(10));
@@ -153,22 +192,22 @@ function generate_factor () {
     }
 }
 
-class Program {
-    commands = [];   
+export class Program {
+    program_list = [];   
 }
 
-class Let_Statement {
+export class Let_Statement {
     let_identifier;
     let_opt_init;
 }
 
-class Assigment_Stmt {
+export class Assigment_Stmt {
     assign_identifier;
     assign_expr;
 }
 
-class Binary_Expr {
-    bin_op;
+export class Arithmetic_Expr {
+    arithmetic_op;
     left;
     right;
 }
